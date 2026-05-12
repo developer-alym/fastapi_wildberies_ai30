@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from datetime import date
 
 class RegisterSchema(BaseModel):
     first_name: str | None
@@ -12,6 +13,8 @@ class RegisterSchema(BaseModel):
 class LoginSchema(BaseModel):
     username: str
     password: str
+
+
 
 
 

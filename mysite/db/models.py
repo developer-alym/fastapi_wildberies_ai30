@@ -1,8 +1,11 @@
 from .database import  Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Integer, SmallInteger, Enum, ForeignKey, Text, Boolean
+from sqlalchemy import (String, Integer, SmallInteger, Enum, ForeignKey,
+                        Text, Boolean, Date, DateTime, Time)
 from enum import Enum as PyEnum
 from typing import Optional, List
+from datetime import date, datetime
+
 
 class StatusUser(str, PyEnum):
     gold = 'gold'
@@ -23,6 +26,7 @@ class UserProfile(Base):
     profile_image: Mapped[str | None] = mapped_column(String, nullable=True)
     status: Mapped[StatusUser] = mapped_column(Enum(StatusUser), default=StatusUser.simple)
     password: Mapped[str] = mapped_column(String)
+    date_register: Mapped[date] = mapped_column(Date, default=date.today())
 
     product_owner: Mapped[List['Product']] = relationship('Product', back_populates='owner',
                                                           cascade='all, delete-orphan')
@@ -125,6 +129,7 @@ class Review(Base):
     stars: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     image: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     video: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow())
 
     user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_review')
     product: Mapped['Product'] = relationship('Product', back_populates='review_product')
